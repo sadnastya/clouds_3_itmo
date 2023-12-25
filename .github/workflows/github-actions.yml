@@ -1,0 +1,30 @@
+name: Docker Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker Image
+      run: docker build -t message-image .
+
+    - name: Prepare Artifacts Directory
+      run: mkdir -p github_workspace/artifacts
+
+    - name: Save Docker Image
+      run: docker save message-image -o github_workspace/artifacts/result.tar
+      if: success()
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: result
+        path: github_workspace/artifacts
