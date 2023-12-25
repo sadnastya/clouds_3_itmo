@@ -43,10 +43,10 @@ jobs:
 
 ## Результат выполнения при пуше изменений в основную ветку:
 
-Сборка выполнилась:\
+Сборка выполнилась:
 
 ![](https://github.com/sadnastya/clouds_3_itmo/blob/main/images/actions_output.png)
 
-Артефакт появился:\
+Артефакт появился:
 
 ![](https://github.com/sadnastya/clouds_3_itmo/blob/main/images/artifact.png)
