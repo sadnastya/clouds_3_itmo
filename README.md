@@ -1,1 +1,41 @@
-# itmo_clouds_3
+### Отчет по 3 лабораторной работе
+
+## Задание:
+Сделать, чтобы после пуша в ваш репозиторий автоматически собирался докер образ и результат его сборки сохранялся куда-нибудь. (например, если результат - текстовый файлик, он должен автоматически сохраниться на локальную машину, в ваш репозиторий или на ваш сервер).
+
+## Процесс выполнения работы:
+
+--1. Для выполнения работы были взяты: программа на языке Python из лабораторной работы номер 2, которая выполняет преобразования с матрицами, и написанный ранее Dockerfile с инструкциями, необходимыми для создания образа контейнера.
+--2. Далее была создана скрытая папка .github/workflows, внутри которой находится наш файлик github-actions.yml который и будет запускать прописанные действия при выполнения каких-либо условий(в данном случае это push в оснувную ветку main):
+```
+name: Docker Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Build Docker Image
+      run: docker build -t message-image .
+
+    - name: Prepare Artifacts Directory
+      run: mkdir -p github_workspace/artifacts
+
+    - name: Save Docker Image
+      run: docker save message-image -o github_workspace/artifacts/result.tar
+      if: success()
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: result
+        path: github_workspace/artifacts
+```
